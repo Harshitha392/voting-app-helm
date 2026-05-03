@@ -1,0 +1,58 @@
+vote:
+  image: vote-app
+  imagePullPolicy: IfNotPresent
+
+result:
+  image: result-app
+  imagePullPolicy: IfNotPresent
+
+worker:
+  image: worker-app
+  imagePullPolicy: IfNotPresent
+
+# Redis (Bitnami) - forced to use local image
+redis:
+  fullnameOverride: redis
+  architecture: standalone
+
+  auth:
+    enabled: false
+
+  image:
+    registry: docker.io
+    repository: bitnami/redis
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  master:
+    image:
+      registry: docker.io
+      repository: bitnami/redis
+      tag: latest
+      pullPolicy: IfNotPresent
+
+    persistence:
+      enabled: false
+
+# Postgres (Bitnami) - forced to use local image
+postgresql:
+  fullnameOverride: db
+
+  auth:
+    postgresPassword: postgres
+
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  primary:
+    image:
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: latest
+      pullPolicy: IfNotPresent
+
+    persistence:
+      enabled: false

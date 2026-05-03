@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: {{ .Values.worker.image }}
+          imagePullPolicy: {{ .Values.worker.imagePullPolicy }}
+
+          env:
+            - name: REDIS_HOST
+              value: redis-master
+
+            - name: DB_HOST
+              value: db
+
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+
+            # 🔥 CRITICAL FIX (forces IPv4 DNS)
+            - name: DOTNET_SYSTEM_NET_DISABLEIPV6
+              value: "1"
+
+            - name: DOTNET_SYSTEM_NET_SOCKETS_INLINE_COMPLETIONS
+              value: "1"
